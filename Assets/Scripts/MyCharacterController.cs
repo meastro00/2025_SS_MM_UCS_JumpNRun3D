@@ -1,8 +1,13 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class MyCharacterController : MonoBehaviour
 {
+    public static int CoinsCollected = 0;
+    public TextMeshProUGUI coinsUi;
+
+
     CharacterController characterController;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -17,6 +22,8 @@ public class MyCharacterController : MonoBehaviour
     {
         characterController.SimpleMove(new Vector3(movement.x, 0.0f, movement.y) * 10.5f);
 
+        coinsUi.text = $"Coins: {CoinsCollected}";
+      //  print(characterController.isGrounded);
     }
 
     void OnMove(InputValue value)
@@ -26,6 +33,11 @@ public class MyCharacterController : MonoBehaviour
 
     void OnJump()
     {
-        characterController.Move(new Vector3(0, 4.0f, 0.0f));
+        //if (characterController.isGrounded)
+        {
+            // Führe Sprung aus
+
+            characterController.Move(new Vector3(0, 4.0f, 0.0f));
+        }
     }
 }
