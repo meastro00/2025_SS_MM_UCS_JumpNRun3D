@@ -5,10 +5,14 @@ using TMPro;
 public class MyCharacterController : MonoBehaviour
 {
     public static int CoinsCollected = 0;
+
     public TextMeshProUGUI coinsUi;
 
     public float speed = 1.0f;
+    public float jumpHeight = 1.0f, gravityMultiply = 2.0f;
+    public float coyoteTime = 0.5f;
 
+    double lastTimeOnGround;
 
     CharacterController characterController;
 
@@ -17,17 +21,15 @@ public class MyCharacterController : MonoBehaviour
     Vector3 playerVelocity;
     CollisionFlags movementResult;
     int movementResultInt;
-    public float jumpHeight = 1.0f;
 
     bool dbgGrounded;
+    double timeInAir;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         characterController = GetComponent<CharacterController>();
     }
-
-
 
     // Update is called once per frame
     private void Update()
@@ -37,22 +39,26 @@ public class MyCharacterController : MonoBehaviour
         if(characterController.isGrounded)
         {
             playerVelocity.y = 0.0f;
+            lastTimeOnGround = Time.timeAsDouble;
         }
+
+        timeInAir = Time.timeAsDouble - lastTimeOnGround;
 
         dbgGrounded = characterController.isGrounded;
 
         if (wantsToJump)
         {
-            if (characterController.isGrounded)
+            if (characterController.isGrounded || timeInAir < coyoteTime)
             {
                 // F¸hre Sprung aus
-                playerVelocity.y = Mathf.Sqrt(jumpHeight * -2.0f * Physics.gravity.y);
+                playerVelocity.y = Mathf.Sqrt(jumpHeight * -2.0f * Physics.gravity.y * gravityMultiply);
             }
             wantsToJump = false;
         }
 
         
-        playerVelocity += Physics.gravity * Time.deltaTime;
+        // NOTE: Ist nicht richtig, da Gravitation nicht so funktioniert -> Objekt wird immer immer schneller. Auﬂerdem: Luftwiederstandt wird nicht bedacht. 
+        playerVelocity += Physics.gravity * Time.deltaTime * gravityMultiply;
 
         Vector3 movementSum = playerMovement + playerVelocity;
 
