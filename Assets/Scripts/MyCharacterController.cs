@@ -44,7 +44,7 @@ public class MyCharacterController : MonoBehaviour
     private void Update()
     {
         movement.y = 0.0f; // Cancel out any unwanted "jumps"
-        Vector3 playerMovement = movement * speed;
+        Vector3 playerMovement = movement.normalized * speed;
 
         if(characterController.isGrounded)
         {
