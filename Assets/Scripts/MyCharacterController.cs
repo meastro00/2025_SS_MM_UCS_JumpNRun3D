@@ -11,6 +11,7 @@ public class MyCharacterController : MonoBehaviour
     public float speed = 1.0f;
     public float jumpHeight = 1.0f, gravityMultiply = 2.0f;
     public float coyoteTime = 0.5f;
+    public int jumpLimit = 2;
 
     double lastTimeOnGround;
 
@@ -21,6 +22,8 @@ public class MyCharacterController : MonoBehaviour
     Vector3 playerVelocity;
     CollisionFlags movementResult;
     int movementResultInt;
+
+    int jumpsExecutedInAir;
 
     bool dbgGrounded;
     double timeInAir;
@@ -40,6 +43,7 @@ public class MyCharacterController : MonoBehaviour
         {
             playerVelocity.y = 0.0f;
             lastTimeOnGround = Time.timeAsDouble;
+            jumpsExecutedInAir = 0;
         }
 
         timeInAir = Time.timeAsDouble - lastTimeOnGround;
@@ -48,11 +52,25 @@ public class MyCharacterController : MonoBehaviour
 
         if (wantsToJump)
         {
-            if (characterController.isGrounded || timeInAir < coyoteTime)
+            bool isAllowedToJump = timeInAir < coyoteTime && jumpsExecutedInAir <= jumpLimit;
+
+            float jumpHeightMultiplier = 1.0f;
+            switch (jumpsExecutedInAir)
+            {
+                case 0: // Erster Sprung
+                    break;
+                case 1: // Zweiter Sprung
+                    jumpHeightMultiplier = 0.5f;
+                    break;
+            }
+
+            if (isAllowedToJump)
             {
                 // Führe Sprung aus
-                playerVelocity.y = Mathf.Sqrt(jumpHeight * -2.0f * Physics.gravity.y * gravityMultiply);
+                playerVelocity.y = Mathf.Sqrt(jumpHeight * jumpHeightMultiplier  * -2.0f * Physics.gravity.y * gravityMultiply);
+                jumpsExecutedInAir += 1;
             }
+
             wantsToJump = false;
         }
 
