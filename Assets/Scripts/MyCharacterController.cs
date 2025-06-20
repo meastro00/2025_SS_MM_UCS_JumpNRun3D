@@ -21,7 +21,7 @@ public class MyCharacterController : MonoBehaviour
     CharacterController characterController;
 
     Vector3 lastGroundedPosition;
-    Vector2 movement;
+    Vector3 movement;
     bool wantsToJump;
     Vector3 playerVelocity;
     CollisionFlags movementResult;
@@ -43,7 +43,8 @@ public class MyCharacterController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        Vector3 playerMovement = new Vector3(movement.x, 0.0f, movement.y) * speed;
+        movement.y = 0.0f; // Cancel out any unwanted "jumps"
+        Vector3 playerMovement = movement * speed;
 
         if(characterController.isGrounded)
         {
@@ -92,6 +93,7 @@ public class MyCharacterController : MonoBehaviour
 
         movementResult = characterController.Move(movementSum * Time.deltaTime);
 
+        // Respawn player if below 15 Meters.
         if(transform.position.y < -15.0f)
         {
             characterController.enabled = false;
@@ -104,12 +106,13 @@ public class MyCharacterController : MonoBehaviour
         
     }
 
-    void OnMove(InputValue value)
+    // Unsere schnittstelle für den Player Input
+    public void SetMovement(Vector3 newMovement)
     {
-        movement = value.Get<Vector2>();
+        movement = newMovement;
     }
 
-    void OnJump()
+    public void SetJump()
     {
         wantsToJump = true;
     }
