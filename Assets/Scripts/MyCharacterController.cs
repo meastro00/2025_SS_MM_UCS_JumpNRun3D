@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+using UnityEngine.Events;
 
 public class MyCharacterController : MonoBehaviour
 {
@@ -13,10 +14,13 @@ public class MyCharacterController : MonoBehaviour
     public float coyoteTime = 0.5f;
     public int jumpLimit = 2;
 
+    public UnityEvent OnJumpEvent = new UnityEvent();
+
     double lastTimeOnGround;
 
     CharacterController characterController;
 
+    Vector3 lastGroundedPosition;
     Vector2 movement;
     bool wantsToJump;
     Vector3 playerVelocity;
@@ -32,6 +36,8 @@ public class MyCharacterController : MonoBehaviour
     void Start()
     {
         characterController = GetComponent<CharacterController>();
+        lastGroundedPosition = transform.position;
+
     }
 
     // Update is called once per frame
@@ -44,6 +50,7 @@ public class MyCharacterController : MonoBehaviour
             playerVelocity.y = 0.0f;
             lastTimeOnGround = Time.timeAsDouble;
             jumpsExecutedInAir = 0;
+            lastGroundedPosition = transform.position;
         }
 
         timeInAir = Time.timeAsDouble - lastTimeOnGround;
@@ -57,9 +64,11 @@ public class MyCharacterController : MonoBehaviour
             float jumpHeightMultiplier = 1.0f;
             switch (jumpsExecutedInAir)
             {
-                case 0: // Erster Sprung
+                case 0: 
+                    // Erster Sprung
                     break;
-                case 1: // Zweiter Sprung
+                case 1: 
+                    // Zweiter Sprung
                     jumpHeightMultiplier = 0.5f;
                     break;
             }
@@ -67,8 +76,9 @@ public class MyCharacterController : MonoBehaviour
             if (isAllowedToJump)
             {
                 // Führe Sprung aus
-                playerVelocity.y = Mathf.Sqrt(jumpHeight * jumpHeightMultiplier  * -2.0f * Physics.gravity.y * gravityMultiply);
+                playerVelocity.y = Mathf.Sqrt(jumpHeight * jumpHeightMultiplier * -2.0f * Physics.gravity.y * gravityMultiply);
                 jumpsExecutedInAir += 1;
+                OnJumpEvent.Invoke();
             }
 
             wantsToJump = false;
@@ -81,6 +91,13 @@ public class MyCharacterController : MonoBehaviour
         Vector3 movementSum = playerMovement + playerVelocity;
 
         movementResult = characterController.Move(movementSum * Time.deltaTime);
+
+        if(transform.position.y < -15.0f)
+        {
+            characterController.enabled = false;
+            transform.position = lastGroundedPosition;
+            characterController.enabled = true;
+        }
         coinsUi.text = $"Coins: {CoinsCollected}";
 
         movementResultInt = (int)movementResult;
