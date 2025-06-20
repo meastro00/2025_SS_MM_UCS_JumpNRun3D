@@ -27,6 +27,8 @@ public class Coin : MonoBehaviour
 
             MyCharacterController.CoinsCollected += 1;
 
+            Destroy(gameObject);
+
         }
 
 
