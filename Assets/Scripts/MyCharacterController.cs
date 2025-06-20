@@ -7,23 +7,60 @@ public class MyCharacterController : MonoBehaviour
     public static int CoinsCollected = 0;
     public TextMeshProUGUI coinsUi;
 
+    public float speed = 1.0f;
+
 
     CharacterController characterController;
+
+    Vector2 movement;
+    bool wantsToJump;
+    Vector3 playerVelocity;
+    CollisionFlags movementResult;
+    int movementResultInt;
+    public float jumpHeight = 1.0f;
+
+    bool dbgGrounded;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         characterController = GetComponent<CharacterController>();
     }
 
-    Vector2 movement;
+
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        characterController.SimpleMove(new Vector3(movement.x, 0.0f, movement.y) * 10.5f);
+        Vector3 playerMovement = new Vector3(movement.x, 0.0f, movement.y) * speed;
 
+        if(characterController.isGrounded)
+        {
+            playerVelocity.y = 0.0f;
+        }
+
+        dbgGrounded = characterController.isGrounded;
+
+        if (wantsToJump)
+        {
+            if (characterController.isGrounded)
+            {
+                // Führe Sprung aus
+                playerVelocity.y = Mathf.Sqrt(jumpHeight * -2.0f * Physics.gravity.y);
+            }
+            wantsToJump = false;
+        }
+
+        
+        playerVelocity += Physics.gravity * Time.deltaTime;
+
+        Vector3 movementSum = playerMovement + playerVelocity;
+
+        movementResult = characterController.Move(movementSum * Time.deltaTime);
         coinsUi.text = $"Coins: {CoinsCollected}";
-      //  print(characterController.isGrounded);
+
+        movementResultInt = (int)movementResult;
+        
     }
 
     void OnMove(InputValue value)
@@ -33,11 +70,6 @@ public class MyCharacterController : MonoBehaviour
 
     void OnJump()
     {
-        //if (characterController.isGrounded)
-        {
-            // Führe Sprung aus
-
-            characterController.Move(new Vector3(0, 4.0f, 0.0f));
-        }
+        wantsToJump = true;
     }
 }
