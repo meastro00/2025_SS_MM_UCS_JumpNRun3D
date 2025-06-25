@@ -9,7 +9,7 @@ public class MyCharacterController : MonoBehaviour
 
     public TextMeshProUGUI coinsUi;
 
-    public float speed = 1.0f;
+    public float speed = 1.0f, movementSmoothing = 0.5f;
     public float jumpHeight = 1.0f, gravityMultiply = 2.0f;
     public float coyoteTime = 0.5f;
     public float turnTime = 15.0f;
@@ -17,13 +17,14 @@ public class MyCharacterController : MonoBehaviour
 
     public UnityEvent OnJumpEvent = new UnityEvent();
 
-    public Transform dbgDest;
     double lastTimeOnGround;
 
     CharacterController characterController;
 
     Vector3 lastGroundedPosition;
     Vector3 movement;
+
+    Vector3 currentPlayerMovement, playerMovementVelocity;
     bool wantsToJump;
     Vector3 playerVelocity;
     CollisionFlags movementResult;
@@ -46,7 +47,7 @@ public class MyCharacterController : MonoBehaviour
     private void Update()
     {
         movement.y = 0.0f; // Cancel out any unwanted "jumps"
-        Vector3 playerMovement = movement.normalized * speed;
+        Vector3 targetPlayerMovement = movement.normalized * speed;
 
         if (characterController.isGrounded)
         {
@@ -91,16 +92,15 @@ public class MyCharacterController : MonoBehaviour
         // NOTE: Ist nicht richtig, da Gravitation nicht so funktioniert -> Objekt wird immer immer schneller. Außerdem: Luftwiederstandt wird nicht bedacht. 
         playerVelocity += Physics.gravity * Time.deltaTime * gravityMultiply;
 
-        Vector3 movementSum = playerMovement + playerVelocity;
+        currentPlayerMovement = Vector3.SmoothDamp(currentPlayerMovement, targetPlayerMovement, ref playerMovementVelocity, movementSmoothing);
+        Vector3 movementSum = currentPlayerMovement + playerVelocity;
 
 
         movementResult = characterController.Move(movementSum * Time.deltaTime);
 
-        if (playerMovement.sqrMagnitude > 0.5f)
+        if (targetPlayerMovement.sqrMagnitude > 0.5f)
         {
-            
-            dbgDest.localPosition = playerMovement;
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(playerMovement), turnTime * Time.deltaTime);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(targetPlayerMovement), turnTime * Time.deltaTime);
             //transform.LookAt(transform.position + offset, Vector3.up);
         }
 

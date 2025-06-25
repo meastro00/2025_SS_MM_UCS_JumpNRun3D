@@ -22,8 +22,13 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        currentCameraGroundPositon = 
+            Vector3.SmoothDamp(
+                currentCameraGroundPositon, 
+                GetCameraGroundTarget(), 
+                ref currentCameraGroundPositionVelocity, 
+                groundSmoothTime);
 
-        currentCameraGroundPositon = Vector3.SmoothDamp(currentCameraGroundPositon, GetCameraGroundTarget(), ref currentCameraGroundPositionVelocity, groundSmoothTime);
         Vector3 cameraAirPosition = currentCameraGroundPositon + Vector3.up * cameraHeight;
 
         transform.position = cameraAirPosition;
