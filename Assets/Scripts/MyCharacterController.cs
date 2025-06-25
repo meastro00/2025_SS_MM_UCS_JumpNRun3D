@@ -12,10 +12,12 @@ public class MyCharacterController : MonoBehaviour
     public float speed = 1.0f;
     public float jumpHeight = 1.0f, gravityMultiply = 2.0f;
     public float coyoteTime = 0.5f;
+    public float turnTime = 15.0f;
     public int jumpLimit = 2;
 
     public UnityEvent OnJumpEvent = new UnityEvent();
 
+    public Transform dbgDest;
     double lastTimeOnGround;
 
     CharacterController characterController;
@@ -46,7 +48,7 @@ public class MyCharacterController : MonoBehaviour
         movement.y = 0.0f; // Cancel out any unwanted "jumps"
         Vector3 playerMovement = movement.normalized * speed;
 
-        if(characterController.isGrounded)
+        if (characterController.isGrounded)
         {
             playerVelocity.y = 0.0f;
             lastTimeOnGround = Time.timeAsDouble;
@@ -91,10 +93,19 @@ public class MyCharacterController : MonoBehaviour
 
         Vector3 movementSum = playerMovement + playerVelocity;
 
+
         movementResult = characterController.Move(movementSum * Time.deltaTime);
 
+        if (playerMovement.sqrMagnitude > 0.5f)
+        {
+            
+            dbgDest.localPosition = playerMovement;
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(playerMovement), turnTime * Time.deltaTime);
+            //transform.LookAt(transform.position + offset, Vector3.up);
+        }
+
         // Respawn player if below 15 Meters.
-        if(transform.position.y < -15.0f)
+        if (transform.position.y < -15.0f)
         {
             characterController.enabled = false;
             transform.position = lastGroundedPosition;

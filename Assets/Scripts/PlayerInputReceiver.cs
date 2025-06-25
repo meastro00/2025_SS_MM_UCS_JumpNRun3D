@@ -9,7 +9,6 @@ public class PlayerInputReceiver : MonoBehaviour
     private void OnMove(InputValue value)
     {
         rawInput = value.Get<Vector2>();
-
     }
 
     private void Update()
