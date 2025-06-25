@@ -17,6 +17,8 @@ public class MyCharacterController : MonoBehaviour
 
     public UnityEvent OnJumpEvent = new UnityEvent();
 
+    public Transform gunBarrelOrigin;
+
     double lastTimeOnGround;
 
     CharacterController characterController;
@@ -114,7 +116,16 @@ public class MyCharacterController : MonoBehaviour
         coinsUi.text = $"Coins: {CoinsCollected}";
 
         movementResultInt = (int)movementResult;
-        
+
+        RaycastHit hit;
+        if(Physics.Raycast(gunBarrelOrigin.transform.position, gunBarrelOrigin.transform.forward, out hit))
+        {
+            if (hit.transform.TryGetComponent<IAttackable>(out IAttackable attackable))
+            {
+                attackable.Damage(3);
+            }
+            //print(hit.transform.gameObject.name);
+        }
     }
 
     // Unsere schnittstelle für den Player Input
