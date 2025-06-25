@@ -8316,7 +8316,7 @@ Transform:
   m_GameObject: {fileID: 1503094020}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.6082, z: 0.387}
+  m_LocalPosition: {x: 0, y: 0.6082, z: 0.58}
   m_LocalScale: {x: 0.2, y: 0.2165, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9186,6 +9186,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coinsUi: {fileID: 1795319555}
   speed: 10
+  movementSmoothing: 0.5
   jumpHeight: 1
   gravityMultiply: 2
   coyoteTime: 0.5
@@ -9206,7 +9207,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  dbgDest: {fileID: 1174014176}
 --- !u!1 &1795319553
 GameObject:
   m_ObjectHideFlags: 0
