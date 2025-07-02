@@ -13,9 +13,10 @@ public class PlayerInputReceiver : MonoBehaviour
 
     private void Update()
     {
-        Vector3 worldSpaceMovement = new Vector3(rawInput.x, 0.0f, rawInput.y);
+        Vector3 worldSpaceMovement = new Vector3(0.0f, 0.0f, rawInput.y);
         Vector3 movementRelativeToCamera = transform.TransformDirection(worldSpaceMovement);
         player.SetMovement(movementRelativeToCamera);
+        player.SetRotation(rawInput.x);
     }
 
     void OnJump()

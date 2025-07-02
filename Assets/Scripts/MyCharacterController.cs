@@ -26,6 +26,8 @@ public class MyCharacterController : MonoBehaviour
     Vector3 lastGroundedPosition;
     Vector3 movement;
 
+    float rotation;
+
     Vector3 currentPlayerMovement, playerMovementVelocity;
     bool wantsToJump;
     Vector3 playerVelocity;
@@ -93,16 +95,16 @@ public class MyCharacterController : MonoBehaviour
         
         // NOTE: Ist nicht richtig, da Gravitation nicht so funktioniert -> Objekt wird immer immer schneller. Außerdem: Luftwiederstandt wird nicht bedacht. 
         playerVelocity += Physics.gravity * Time.deltaTime * gravityMultiply;
-
+        transform.Rotate(0f, rotation * Time.deltaTime * turnTime, 0f);
         currentPlayerMovement = Vector3.SmoothDamp(currentPlayerMovement, targetPlayerMovement, ref playerMovementVelocity, movementSmoothing);
         Vector3 movementSum = currentPlayerMovement + playerVelocity;
 
-
+      
         movementResult = characterController.Move(movementSum * Time.deltaTime);
 
         if (targetPlayerMovement.sqrMagnitude > 0.5f)
         {
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(targetPlayerMovement), turnTime * Time.deltaTime);
+           // transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(targetPlayerMovement), turnTime * Time.deltaTime);
             //transform.LookAt(transform.position + offset, Vector3.up);
         }
 
@@ -132,6 +134,11 @@ public class MyCharacterController : MonoBehaviour
     public void SetMovement(Vector3 newMovement)
     {
         movement = newMovement;
+    }
+
+    public void SetRotation(float rotation)
+    {
+        this.rotation = rotation;
     }
 
     public void SetJump()
