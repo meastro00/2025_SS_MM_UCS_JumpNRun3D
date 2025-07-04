@@ -42,6 +42,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Height_LOD: 7.39
+    - _Height_Scale: 6.31
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Time_Scale_A: 0.09
