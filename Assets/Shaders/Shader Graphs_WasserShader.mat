@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shader Graphs_MeinErsterShader
-  m_Shader: {fileID: -6465566751694194690, guid: 76d9fe65c7d6bf544b45657ab0e89aed, type: 3}
+  m_Name: Shader Graphs_WasserShader
+  m_Shader: {fileID: -6465566751694194690, guid: 03750a0ec95a26d41be6dee155ed6ff3, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -25,15 +25,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _Texture2D:
-        m_Texture: {fileID: 2800000, guid: a2ace9d57660e964ca177d08dd95052c, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Texture2D_2:
-        m_Texture: {fileID: 2800000, guid: 2bcef88bdaa97f940af74423e9c5ad7c, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Triplanar_144f3d3bb83c4bf6b9482c2866ad936d_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: eb0889f389b1c1542bab0a2d7189f5d0, type: 3}
+        m_Texture: {fileID: 2800000, guid: 5370c314d57632841b551a12ab82dc68, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -50,17 +42,16 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Factor: 1
-    - _Helligkeit: 1
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _Time_Scale_A: 0.09
+    - _Time_Scale_B: 0.24
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 0}
-    - _Texture_Offset: {r: 0, g: 0, b: 0, a: 0}
-    - _Texture_Tiling: {r: 1, g: 1, b: 0, a: 0}
+    - _Color_A: {r: 0.22266665, g: 0.41477123, b: 0.654902, a: 0}
+    - _Color_B: {r: 0.87, g: 0.92044777, b: 1, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &845340855164797762
+--- !u!114 &5023308070362794843
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
