@@ -15,6 +15,8 @@ public class MyCharacterController : MonoBehaviour
     public float turnTime = 15.0f;
     public int jumpLimit = 2;
 
+
+    public Animator animator;
     public UnityEvent OnJumpEvent = new UnityEvent();
 
     public Transform gunBarrelOrigin;
@@ -99,8 +101,9 @@ public class MyCharacterController : MonoBehaviour
         currentPlayerMovement = Vector3.SmoothDamp(currentPlayerMovement, targetPlayerMovement, ref playerMovementVelocity, movementSmoothing);
         Vector3 movementSum = currentPlayerMovement + playerVelocity;
 
-      
+        animator.SetFloat("Movement", targetPlayerMovement.magnitude);
         movementResult = characterController.Move(movementSum * Time.deltaTime);
+
 
         if (targetPlayerMovement.sqrMagnitude > 0.5f)
         {
