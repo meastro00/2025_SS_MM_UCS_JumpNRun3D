@@ -64,6 +64,8 @@ public class MyCharacterController : MonoBehaviour
         }
 
         timeInAir = Time.timeAsDouble - lastTimeOnGround;
+        // Aktiviere Sprung Animation, wenn in der Luft.
+        animator.SetBool("IsInAir", timeInAir > 0.05);
 
         dbgGrounded = characterController.isGrounded;
 
@@ -93,6 +95,9 @@ public class MyCharacterController : MonoBehaviour
 
             wantsToJump = false;
         }
+
+        
+       
 
         
         // NOTE: Ist nicht richtig, da Gravitation nicht so funktioniert -> Objekt wird immer immer schneller. Auﬂerdem: Luftwiederstandt wird nicht bedacht. 

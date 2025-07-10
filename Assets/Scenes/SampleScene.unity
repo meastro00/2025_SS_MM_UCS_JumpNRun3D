@@ -29169,7 +29169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coinsUi: {fileID: 1795319555}
   speed: 10
-  movementSmoothing: 0.5
+  movementSmoothing: 0.05
   jumpHeight: 1
   gravityMultiply: 2
   coyoteTime: 0.5
