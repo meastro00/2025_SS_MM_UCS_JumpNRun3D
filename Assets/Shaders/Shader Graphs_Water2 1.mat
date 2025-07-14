@@ -47,9 +47,9 @@ Material:
     - _Normal_Strength: 0.5
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Water_Speed: 0.25
+    - _Water_Speed: -0.07
     m_Colors:
-    - _BaseColor: {r: 0.8930817, g: 0.60535055, b: 0.047743276, a: 1}
+    - _BaseColor: {r: 0.0404651, g: 0.08809905, b: 0.41509432, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &4027576387392228066
