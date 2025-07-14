@@ -15,6 +15,8 @@ public class MyCharacterController : MonoBehaviour
     public float turnTime = 15.0f;
     public int jumpLimit = 2;
 
+
+    public Animator animator;
     public UnityEvent OnJumpEvent = new UnityEvent();
 
     public Transform gunBarrelOrigin;
@@ -25,6 +27,8 @@ public class MyCharacterController : MonoBehaviour
 
     Vector3 lastGroundedPosition;
     Vector3 movement;
+
+    float rotation;
 
     Vector3 currentPlayerMovement, playerMovementVelocity;
     bool wantsToJump;
@@ -60,6 +64,8 @@ public class MyCharacterController : MonoBehaviour
         }
 
         timeInAir = Time.timeAsDouble - lastTimeOnGround;
+        // Aktiviere Sprung Animation, wenn in der Luft.
+        animator.SetBool("IsInAir", timeInAir > 0.05);
 
         dbgGrounded = characterController.isGrounded;
 
@@ -91,18 +97,22 @@ public class MyCharacterController : MonoBehaviour
         }
 
         
+       
+
+        
         // NOTE: Ist nicht richtig, da Gravitation nicht so funktioniert -> Objekt wird immer immer schneller. Außerdem: Luftwiederstandt wird nicht bedacht. 
         playerVelocity += Physics.gravity * Time.deltaTime * gravityMultiply;
-
+        transform.Rotate(0f, rotation * Time.deltaTime * turnTime, 0f);
         currentPlayerMovement = Vector3.SmoothDamp(currentPlayerMovement, targetPlayerMovement, ref playerMovementVelocity, movementSmoothing);
         Vector3 movementSum = currentPlayerMovement + playerVelocity;
 
-
+        animator.SetFloat("Movement", targetPlayerMovement.magnitude);
         movementResult = characterController.Move(movementSum * Time.deltaTime);
+
 
         if (targetPlayerMovement.sqrMagnitude > 0.5f)
         {
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(targetPlayerMovement), turnTime * Time.deltaTime);
+           // transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(targetPlayerMovement), turnTime * Time.deltaTime);
             //transform.LookAt(transform.position + offset, Vector3.up);
         }
 
@@ -132,6 +142,11 @@ public class MyCharacterController : MonoBehaviour
     public void SetMovement(Vector3 newMovement)
     {
         movement = newMovement;
+    }
+
+    public void SetRotation(float rotation)
+    {
+        this.rotation = rotation;
     }
 
     public void SetJump()
